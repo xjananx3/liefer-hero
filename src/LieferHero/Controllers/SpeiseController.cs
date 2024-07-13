@@ -1,3 +1,4 @@
+using System.Security.AccessControl;
 using LieferHero.Data;
 using LieferHero.ViewModels;
 using Microsoft.AspNetCore.Mvc;
@@ -16,20 +17,15 @@ public class SpeiseController : Controller
     // GET
     public async Task<IActionResult> Index()
     {
-        var speisen = await _context.Speisen.ToListAsync();
-        var speisenVm = new List<SpeiseViewModel>();
-
-        foreach (var speise in speisen)
-        {
-            var speiseVm = new SpeiseViewModel()
+        var speisenVm = await _context.Speisen
+            .Select(s => new SpeiseViewModel()
             {
-                Id = speise.Id,
-                Name = speise.Name,
-                Preis = speise.Price,
+                Id = s.Id,
+                Name = s.Name,
+                Preis = s.Price,
                 Menge = 0
-            };
-            speisenVm.Add(speiseVm);
-        }
+            })
+            .ToListAsync();
         return View(speisenVm);
     }
 }
