@@ -11,9 +11,8 @@
     <tr>
         <th>Nummer</th>
         <th>Name</th>
-        <th>Menge</th>
         <th>Preis</th>
-        <th>BEstellen</th>
+        <th></th>
     </tr>
     </thead>
     <tbody>
@@ -22,9 +21,13 @@
         <tr>
             <td>@item.Id</td>
             <td>@item.Name</td>
-            <td>@item.Menge</td>
             <td>@item.Preis</td>
-            <td><a asp-controller="Speise" asp-action="SpeiseZurBestellungHinzufuegen"></a></td>
+            <td><form asp-controller="Speise" asp-action="SpeiseZurBestellungHinzufuegen" method="post">
+                    <input type="hidden" name="SpeiseId" value="@item.Id" />
+                    <input type="number" name="Menge" value="1" min="1"/>
+                    <button type="submit" class="btn btn-primary">Zur Bestellung hinzufügen</button>
+                </form>
+            </td>
         </tr>
     }
     </tbody>
