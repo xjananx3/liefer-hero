@@ -1,0 +1,26 @@
+@model Bestellung
+
+@{
+}
+
+<h2>Bestellung</h2>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Menge</th>
+        <th>Preis</th>
+    </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Speisen)
+        {
+            <tr>
+                <td>@item.Speise.Name</td>
+                <td>@item.Menge</td>
+                <td>@item.Speise.Price</td>
+            </tr>
+        }
+    </tbody>
+</table>
