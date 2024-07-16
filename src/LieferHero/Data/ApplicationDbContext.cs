@@ -13,6 +13,5 @@ public class ApplicationDbContext : DbContext
     public DbSet<Speise> Speisen { get; set; }
     public DbSet<Bestellung> Bestellungen { get; set; }
     public DbSet<SpeiseInBestellung> SpeisenInBestellung { get; set; }
-    public DbSet<BestellungAufgeben> AufgegebeneBesellungen { get; set; }
-    public DbSet<SpeiseHinzufuegenAnfrage> SpeiseHinzufuegenAnfragen { get; set; }
+    public DbSet<AufgegebeneBestellung> AufgegebeneBestellungen { get; set; }
 }

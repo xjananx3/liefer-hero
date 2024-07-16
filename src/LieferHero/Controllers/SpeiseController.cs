@@ -15,7 +15,7 @@ public class SpeiseController : Controller
     {
         _context = context;
     }
-    // GET
+    
     public async Task<IActionResult> Index()
     {
         var speisenVm = await _context.Speisen
