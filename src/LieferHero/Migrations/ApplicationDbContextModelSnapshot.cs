@@ -17,6 +17,29 @@ namespace LieferHero.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.7");
 
+            modelBuilder.Entity("LieferHero.Models.AufgegebeneBestellung", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("BestellungId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<decimal>("GesamtKosten")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Nachricht")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BestellungId");
+
+                    b.ToTable("AufgegebeneBestellungen");
+                });
+
             modelBuilder.Entity("LieferHero.Models.Bestellung", b =>
                 {
                     b.Property<int>("Id")
@@ -29,24 +52,6 @@ namespace LieferHero.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Bestellungen");
-                });
-
-            modelBuilder.Entity("LieferHero.Models.BestellungAufgeben", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<decimal>("GesamtKosten")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Nachricht")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("AufgegebeneBesellungen");
                 });
 
             modelBuilder.Entity("LieferHero.Models.Speise", b =>
@@ -68,23 +73,6 @@ namespace LieferHero.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Speisen");
-                });
-
-            modelBuilder.Entity("LieferHero.Models.SpeiseHinzufuegenAnfrage", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("Menge")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("SpeiseId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("SpeiseHinzufuegenAnfragen");
                 });
 
             modelBuilder.Entity("LieferHero.Models.SpeiseInBestellung", b =>
@@ -109,6 +97,17 @@ namespace LieferHero.Migrations
                     b.HasIndex("SpeiseId");
 
                     b.ToTable("SpeisenInBestellung");
+                });
+
+            modelBuilder.Entity("LieferHero.Models.AufgegebeneBestellung", b =>
+                {
+                    b.HasOne("LieferHero.Models.Bestellung", "Bestellung")
+                        .WithMany()
+                        .HasForeignKey("BestellungId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Bestellung");
                 });
 
             modelBuilder.Entity("LieferHero.Models.SpeiseInBestellung", b =>

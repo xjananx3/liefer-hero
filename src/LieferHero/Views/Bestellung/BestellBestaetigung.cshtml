@@ -4,3 +4,34 @@
     
 }
 
+<h2>Vielen Dank für deine Bestellung</h2>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Menge</th>
+        <th>Preis</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model.Bestellung.Speisen)
+    {
+        <tr>
+            <td>@item.Speise.Name</td>
+            <td>@item.Menge</td>
+            <td>@item.Speise.Price</td>
+        </tr>
+    }
+    </tbody>
+</table>
+<div class="col-md-4">
+    <h3 class="my-3">Gesamtkosten</h3>
+    <p>@Model.GesamtKosten</p>
+    <h3 class="my-3"></h3>
+    <p>@Model.Nachricht</p>
+</div>
+
+<form asp-controller="Speise" asp-action="Index">
+    <button type="submit" class="btn btn-primary">Zurück zur Startseite</button>
+</form>
