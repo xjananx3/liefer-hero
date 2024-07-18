@@ -1,5 +1,6 @@
 using System.Security.AccessControl;
 using LieferHero.Data;
+using LieferHero.Interfaces;
 using LieferHero.Models;
 using LieferHero.ViewModels;
 using Microsoft.AspNetCore.Mvc;
@@ -9,16 +10,20 @@ namespace LieferHero.Controllers;
 
 public class SpeiseController : Controller
 {
+    private readonly ISpeiseRepository _speiseRepository;
     private readonly ApplicationDbContext _context;
 
-    public SpeiseController(ApplicationDbContext context)
+    public SpeiseController(ISpeiseRepository speiseRepository, ApplicationDbContext context)
     {
+        _speiseRepository = speiseRepository;
         _context = context;
     }
     
     public async Task<IActionResult> Index()
     {
-        var speisenVm = await _context.Speisen
+        var speisen = await _speiseRepository.GetAll();
+
+        var speisenVm = speisen
             .Select(s => new SpeiseViewModel()
             {
                 Id = s.Id,
@@ -26,14 +31,14 @@ public class SpeiseController : Controller
                 Preis = s.Price,
                 Menge = 0
             })
-            .ToListAsync();
+            .ToList();
+        
         return View(speisenVm);
     }
 
     public async Task<IActionResult> SpeiseZurBestellungHinzufuegen(int speiseId, int menge)
     {
-        var speise = await _context.Speisen.FindAsync(speiseId);
-        if (speise != null)
+        var speise = await _speiseRepository.GetByIdAsync(speiseId);
         {
             var bestellSpeise = new SpeiseInBestellung()
             {
