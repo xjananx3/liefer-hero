@@ -1,4 +1,5 @@
 using LieferHero.Data;
+using LieferHero.Interfaces;
 using LieferHero.Models;
 using LieferHero.ViewModels;
 using Microsoft.AspNetCore.Mvc;
@@ -8,22 +9,24 @@ namespace LieferHero.Controllers;
 
 public class BestellungController : Controller
 {
-    private readonly ApplicationDbContext _context;
+    private readonly IBestellungRepository _bestellungRepository;
+    private readonly IAufgegebeneBestellungRepository _aufgegebeneBestellungRepository;
+    private readonly ISpeiseInBestellungRepository _speiseInBestellungRepository;
 
-    public BestellungController(ApplicationDbContext context)
+    public BestellungController(IBestellungRepository bestellungRepository, IAufgegebeneBestellungRepository aufgegebeneBestellungRepository, ISpeiseInBestellungRepository speiseInBestellungRepository)
     {
-        _context = context;
+        _bestellungRepository = bestellungRepository;
+        _aufgegebeneBestellungRepository = aufgegebeneBestellungRepository;
+        _speiseInBestellungRepository = speiseInBestellungRepository;
     }
     
     public async Task<IActionResult> Index()
     {
-        var speisenInBestellung = await _context.SpeisenInBestellung
-            .Include(be => be.Speise)
-            .ToListAsync();
+        var speisenInBestellung = await _speiseInBestellungRepository.GetAll();
 
         var bestellung = new Bestellung()
         {
-            Speisen = speisenInBestellung,
+            Speisen = speisenInBestellung.ToList(),
         };
         
         return View(bestellung);
@@ -32,39 +35,30 @@ public class BestellungController : Controller
     [HttpPost]
     public async Task<IActionResult> BestellungAufgeben()
     {
-        var bestellSpeisen = await _context.SpeisenInBestellung
-            .Include(be => be.Speise)
-            .ToListAsync();
+        var bestellSpeisen = await _speiseInBestellungRepository.GetAll();
         
         if (bestellSpeisen != null)
         {
             var bestellung = new Bestellung()
             {
-                Speisen = bestellSpeisen,
+                Speisen = bestellSpeisen.ToList(),
                 BestellZeit = DateTime.Now
             };
-            _context.Bestellungen.Add(bestellung);
+            _bestellungRepository.Add(bestellung);
         }
-        
-        await _context.SaveChangesAsync();
         
         return RedirectToAction("BestellZusammenfassung");
     }
 
     public async Task<IActionResult> BestellZusammenfassung(int id)
     {
-        var userBestellunG = await _context.Bestellungen.FirstOrDefaultAsync(b => b.Id == id);
-        var bestellSpeisen = await _context.SpeisenInBestellung
-            .Include(be => be.Speise)
-            .Where(be => be.BestellungId == id) // Filter nach BestellungId
-            .ToListAsync();
-
+        var userBestellung = await _bestellungRepository.GetById(id);
+        var bestellSpeisen = await _speiseInBestellungRepository.GetByOrderIdAsync(id);
         var bestellZusammenfassungViewModel = new BestellZusammenfassungViewModel()
         {
-            BestellungId = userBestellunG.Id,
-            Speisen = bestellSpeisen,
-            BestellZeit = userBestellunG.BestellZeit,
-
+            BestellungId = userBestellung.Id,
+            Speisen = bestellSpeisen.ToList(),
+            BestellZeit = userBestellung.BestellZeit,
         };
         
         return View(bestellZusammenfassungViewModel);
@@ -73,16 +67,11 @@ public class BestellungController : Controller
     [HttpPost]
     public async Task<IActionResult> BestellBestaetigung(int id)
     {
-        var bestellSpeisen = await _context.SpeisenInBestellung
-            .Include(be => be.Speise)
-            .Where(be => be.BestellungId == id) // Filter nach BestellungId
-            .ToListAsync();
+        var bestellSpeisen = await _speiseInBestellungRepository.GetByOrderIdAsync(id);
         
-        var bestellung = await _context.Bestellungen.FirstOrDefaultAsync(b => b.Id == id);
-
+        var bestellung = await _bestellungRepository.GetById(id);
         var gesamtKosten = CalculateTotalCost(bestellSpeisen);
         var nachricht = $"Bestellung erfolgreich aufgegeben: {gesamtKosten:C}";
-        
         
         var aufgegebeneBestellung = new AufgegebeneBestellung()
         {
@@ -91,10 +80,8 @@ public class BestellungController : Controller
             BestellungId = bestellung.Id,
             Bestellung = bestellung
         };
-        
-        _context.AufgegebeneBestellungen.Add(aufgegebeneBestellung);
-        _context.SpeisenInBestellung.RemoveRange(bestellSpeisen);
-        await _context.SaveChangesAsync();
+        _aufgegebeneBestellungRepository.Add(aufgegebeneBestellung);
+        _speiseInBestellungRepository.DeleteAll(bestellSpeisen);
         
         return View(aufgegebeneBestellung);
     }

@@ -11,12 +11,13 @@ namespace LieferHero.Controllers;
 public class SpeiseController : Controller
 {
     private readonly ISpeiseRepository _speiseRepository;
-    private readonly ApplicationDbContext _context;
+    private readonly ISpeiseInBestellungRepository _speiseInBestellungRepository;
 
-    public SpeiseController(ISpeiseRepository speiseRepository, ApplicationDbContext context)
+
+    public SpeiseController(ISpeiseRepository speiseRepository, ISpeiseInBestellungRepository speiseInBestellungRepository)
     {
         _speiseRepository = speiseRepository;
-        _context = context;
+        _speiseInBestellungRepository = speiseInBestellungRepository;
     }
     
     public async Task<IActionResult> Index()
@@ -45,10 +46,8 @@ public class SpeiseController : Controller
                 Speise = speise,
                 Menge = menge
             };
-            _context.SpeisenInBestellung.Add(bestellSpeise);
-            await _context.SaveChangesAsync();
+            _speiseInBestellungRepository.Add(bestellSpeise);
         }
-
         return RedirectToAction("Index");
     }
 }
