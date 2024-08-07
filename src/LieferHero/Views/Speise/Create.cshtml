@@ -1,0 +1,30 @@
+@model LieferHero.ViewModels.CreateSpeiseViewModel
+
+@{
+}
+
+<h2>Neue Speise erstellen</h2>
+
+<form method="post" asp-action="Create" enctype="multipart/form-data">
+    <div class="form-group">
+        <label asp-for="Name">Name</label>
+        <input asp-for="Name" class="form-control" placeholder="Name">
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Beschreibung">Beschreibung</label>
+        <input asp-for="Beschreibung" class="form-control" placeholder="Beschreibung">
+        <span asp-validation-for="Beschreibung" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Bild">Bild</label>
+        <input asp-for="Bild" type="file" class="form-control" placeholder="Bild">
+        <span asp-validation-for="Bild" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Preis">Preis</label>
+        <input asp-for="Preis" class="form-control" placeholder="Preis">
+        <span asp-validation-for="Preis" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Erstellen</button>
+</form>

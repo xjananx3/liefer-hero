@@ -60,6 +60,12 @@ namespace LieferHero.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("Beschreibung")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Bild")
+                        .HasColumnType("TEXT");
+
                     b.Property<DateTime>("ErstelltAm")
                         .HasColumnType("TEXT");
 
@@ -67,7 +73,7 @@ namespace LieferHero.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<decimal>("Price")
+                    b.Property<decimal>("Preis")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
