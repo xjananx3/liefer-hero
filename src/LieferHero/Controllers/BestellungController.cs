@@ -88,7 +88,7 @@ public class BestellungController : Controller
     
     private decimal CalculateTotalCost(IEnumerable<SpeiseInBestellung> orderItems)
     {
-        decimal sumCost = orderItems.Sum(o => o.Menge * o.Speise.Price);
+        decimal sumCost = orderItems.Sum(o => o.Menge * o.Speise.Preis);
         sumCost += sumCost * 0.1m; // Apply 10% tax
         if (sumCost > 50)
         {
