@@ -1,4 +1,4 @@
-@model IEnumerable<LieferHero.ViewModels.SpeiseViewModel>
+@model IEnumerable<Speise>
 
 @{
     
@@ -22,12 +22,7 @@
             <td>@item.Id</td>
             <td>@item.Name</td>
             <td>@item.Preis</td>
-            <td><form asp-controller="Speise" asp-action="SpeiseZurBestellungHinzufuegen" method="post">
-                    <input type="hidden" name="SpeiseId" value="@item.Id" />
-                    <input type="number" name="Menge" value="1" min="1"/>
-                    <button type="submit" class="btn btn-primary">Zur Bestellung hinzufügen</button>
-                </form>
-            </td>
+            <td></td>
         </tr>
     }
     </tbody>

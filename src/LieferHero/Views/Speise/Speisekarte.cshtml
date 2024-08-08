@@ -1,0 +1,33 @@
+@model IEnumerable<LieferHero.ViewModels.SpeiseViewModel>
+
+@{
+}
+
+<h1>Unsere Speisen</h1>
+
+<table class="table table-bordered">
+    <thead>
+    <tr>
+        <th>Nummer</th>
+        <th>Name</th>
+        <th>Preis</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model)
+    {
+    <tr>
+        <td>@item.Id</td>
+        <td>@item.Name</td>
+        <td>@item.Preis</td>
+        <td><form asp-controller="Speise" asp-action="SpeiseZurBestellungHinzufuegen" method="post">
+                <input type="hidden" name="SpeiseId" value="@item.Id" />
+                <input type="number" name="Menge" value="1" min="1"/>
+                <button type="submit" class="btn btn-primary">Zur Bestellung hinzufügen</button>
+            </form>
+        </td>
+    </tr>
+    }
+    </tbody>
+</table>

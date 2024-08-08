@@ -25,8 +25,15 @@ public class SpeiseController : Controller
     public async Task<IActionResult> Index()
     {
         var speisen = await _speiseRepository.GetAll();
+        
+        return View(speisen);
+    }
 
-        var speisenVm = speisen
+    public async Task<IActionResult> Speisekarte()
+    {
+        var speisen = await _speiseRepository.GetAll();
+
+        var speisekarte = speisen
             .Select(s => new SpeiseViewModel()
             {
                 Id = s.Id,
@@ -36,7 +43,7 @@ public class SpeiseController : Controller
             })
             .ToList();
         
-        return View(speisenVm);
+        return View(speisekarte);
     }
 
     public async Task<IActionResult> SpeiseZurBestellungHinzufuegen(int speiseId, int menge)
