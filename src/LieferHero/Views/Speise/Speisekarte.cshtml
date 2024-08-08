@@ -3,31 +3,32 @@
 @{
 }
 
-<h1>Unsere Speisen</h1>
+<h1>Unsere Speisekarte</h1>
 
-<table class="table table-bordered">
-    <thead>
-    <tr>
-        <th>Nummer</th>
-        <th>Name</th>
-        <th>Preis</th>
-        <th></th>
-    </tr>
-    </thead>
-    <tbody>
-    @foreach (var item in Model)
-    {
-    <tr>
-        <td>@item.Id</td>
-        <td>@item.Name</td>
-        <td>@item.Preis</td>
-        <td><form asp-controller="Speise" asp-action="SpeiseZurBestellungHinzufuegen" method="post">
-                <input type="hidden" name="SpeiseId" value="@item.Id" />
-                <input type="number" name="Menge" value="1" min="1"/>
-                <button type="submit" class="btn btn-primary">Zur Bestellung hinzufügen</button>
-            </form>
-        </td>
-    </tr>
-    }
-    </tbody>
-</table>
+<div class="album py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            @foreach (var item in Model)
+            {
+            <div class="col-md-4">
+                <div class="card mb-4 box-shadow">
+                    <img class="card-img-top" src="@item.Bild" width="100%" height="225" alt="Card image cap">
+                    <div class="card-body">
+                        <p class="card-text">@item.Name</p>
+                        <p class="card-text">@item.Preis</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <form asp-controller="Speise" asp-action="SpeiseZurBestellungHinzufuegen" method="post">
+                            <input type="hidden" name="SpeiseId" value="@item.Id" />
+                            <input type="number" name="Menge" value="1" min="1"/>
+                            <p class="card-text"></p>
+                            <button type="submit" class="btn btn-primary">Zur Bestellung hinzufügen</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            }
+        </div>
+    </div>
+</div>
+

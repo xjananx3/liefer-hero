@@ -4,7 +4,7 @@
     
 }
 
-<h1>Unsere Speisen</h1>
+<h1>Speisen</h1>
 
 <table class="table table-bordered">
     <thead>
@@ -22,7 +22,12 @@
             <td>@item.Id</td>
             <td>@item.Name</td>
             <td>@item.Preis</td>
-            <td></td>
+            <td><a type="btn btn-success" asp-controller="Speise" asp-action="Detail" asp-route-id="@item.Id"
+                   class="btn btn-sm btn-outline-secondary">Anzeigen</a>
+                <a type="btn btn-success" asp-controller="Speise" asp-action="Edit" asp-route-id="@item.Id"
+                   class="btn btn-sm btn-outline-secondary">Bearbeiten</a>
+                <a type="btn btn-success" asp-controller="Speise" asp-action="Delete" asp-route-id="@item.Id"
+                   class="btn btn-sm btn-outline-secondary">Löschen</a></td>
         </tr>
     }
     </tbody>

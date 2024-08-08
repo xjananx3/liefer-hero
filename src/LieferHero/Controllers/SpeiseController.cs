@@ -78,7 +78,7 @@ public class SpeiseController : Controller
                 Beschreibung = speiseVm.Beschreibung,
                 Preis = speiseVm.Preis,
                 Bild = result.Url.ToString(),
-                ErstelltAm = speiseVm.ErstelltAm
+                ErstelltAm = DateTime.Now
             };
             _speiseRepository.Add(speise);
             return RedirectToAction("Index");
@@ -99,7 +99,7 @@ public class SpeiseController : Controller
         var speiseVm = new EditSpeiseViewModel()
         {
             Name = speise.Name,
-            Beschreibung = speise.Beschreibung ?? null,
+            Beschreibung = speise.Beschreibung,
             Url = speise.Bild,
             Preis = speise.Preis
         };
