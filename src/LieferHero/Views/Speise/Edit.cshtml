@@ -5,3 +5,28 @@
 }
 
 <h2>Speise bearbeiten</h2>
+
+
+<form method="post" asp-action="Edit" enctype="multipart/form-data">
+    <div class="form-group">
+        <label asp-for="Name">Title</label>
+        <input asp-for="Name" class="form-control" placeholder="Name">
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Beschreibung">Beschreibung</label>
+        <input asp-for="Beschreibung" class="form-control" placeholder="Beschreibung">
+        <span asp-validation-for="Beschreibung" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Preis">Preis</label>
+        <input asp-for="Preis" class="form-control" placeholder="Preis">
+        <span asp-validation-for="Preis" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Bild">Bild</label>
+        <input asp-for="Bild" type="file" class="form-control" placeholder="Bild">
+        <span asp-validation-for="Bild" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
