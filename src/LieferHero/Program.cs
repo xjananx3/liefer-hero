@@ -1,6 +1,8 @@
 using LieferHero.Data;
+using LieferHero.Helpers;
 using LieferHero.Interfaces;
 using LieferHero.Repository;
+using LieferHero.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +13,8 @@ builder.Services.AddScoped<ISpeiseRepository, SpeiseRepository>();
 builder.Services.AddScoped<ISpeiseInBestellungRepository, SpeiseInBestellungRepository>();
 builder.Services.AddScoped<IBestellungRepository, BestellungRepository>();
 builder.Services.AddScoped<IAufgegebeneBestellungRepository, AufgegebeneBestellungRepository>();
+builder.Services.AddScoped<IPhotoService, PhotoService>();
+builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("CloudinarySettings"));
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
