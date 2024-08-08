@@ -82,4 +82,86 @@ public class SpeiseController : Controller
         }
         return View(speiseVm);
     }
+
+    public async Task<IActionResult> Edit(int id)
+    {
+        var speise = await _speiseRepository.GetByIdAsync(id);
+        if (speise == null)
+            return View("Error");
+
+        var speiseVm = new EditSpeiseViewModel()
+        {
+            Name = speise.Name,
+            Beschreibung = speise.Beschreibung ?? null,
+            Url = speise.Bild,
+            Preis = speise.Preis
+        };
+        return View(speiseVm);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Edit(int id, EditSpeiseViewModel speiseVm)
+    {
+        if(!ModelState.IsValid)
+        {
+            ModelState.AddModelError("", "Speise bearbeiten ist fehlgeschlagen...");
+            return View("Edit", speiseVm);
+        }
+
+        var userSpeise = await _speiseRepository.GetByIdAsync(id);
+
+        if (userSpeise != null)
+        {
+            try
+            {
+                await _photoService.DeletePhotoAsync(userSpeise.Bild);
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", "Bild konnte nicht gelöscht werden...");
+                return View(speiseVm);
+            }
+
+            var photoResult = await _photoService.AddPhotoAsync(speiseVm.Bild);
+
+            var speise = new Speise()
+            {
+                Id = id,
+                Name = speiseVm.Name,
+                Beschreibung = speiseVm.Beschreibung,
+                Bild = photoResult.Url.ToString(),
+                Preis = speiseVm.Preis,
+                ErstelltAm = speiseVm.ErstelltAm
+            };
+            _speiseRepository.Update(speise);
+
+            return RedirectToAction("Index");
+        }
+
+        return View(speiseVm);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> Delete(int id)
+    {
+        var speiseDetails = await _speiseRepository.GetByIdAsync(id);
+        if (speiseDetails == null)
+            return View("Error");
+        return View(speiseDetails);
+    }
+
+    [HttpPost]
+    [ActionName("Delete")]
+    public async Task<IActionResult> DeleteSpeise(int id)
+    {
+        var speiseDetails = await _speiseRepository.GetByIdAsync(id);
+
+        if (speiseDetails == null)
+            return View("Error");
+
+        if (!string.IsNullOrWhiteSpace(speiseDetails.Bild)) _ = _photoService.DeletePhotoAsync(speiseDetails.Bild);
+
+        _speiseRepository.Delete(speiseDetails);
+        return View(speiseDetails);
+    }
 }
