@@ -12,6 +12,7 @@
         <th>Nummer</th>
         <th>Name</th>
         <th>Preis</th>
+        <th>Bild</th>
         <th></th>
     </tr>
     </thead>
@@ -22,6 +23,7 @@
             <td>@item.Id</td>
             <td>@item.Name</td>
             <td>@item.Preis</td>
+            <td><img class="card-img-top" src="@item.Bild" width="100%" height="225" alt="Card image cap"></td>
             <td><a type="btn btn-success" asp-controller="Speise" asp-action="Detail" asp-route-id="@item.Id"
                    class="btn btn-sm btn-outline-secondary">Anzeigen</a>
                 <a type="btn btn-success" asp-controller="Speise" asp-action="Edit" asp-route-id="@item.Id"

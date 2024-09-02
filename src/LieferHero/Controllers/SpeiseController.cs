@@ -39,6 +39,7 @@ public class SpeiseController : Controller
                 Id = s.Id,
                 Name = s.Name,
                 Preis = s.Preis,
+                Bild = s.Bild,
                 Menge = 0
             })
             .ToList();
@@ -101,6 +102,7 @@ public class SpeiseController : Controller
             Name = speise.Name,
             Beschreibung = speise.Beschreibung,
             Url = speise.Bild,
+            ErstelltAm = speise.ErstelltAm,
             Preis = speise.Preis
         };
         return View(speiseVm);
@@ -109,11 +111,11 @@ public class SpeiseController : Controller
     [HttpPost]
     public async Task<IActionResult> Edit(int id, EditSpeiseViewModel speiseVm)
     {
-        if(!ModelState.IsValid)
+        /*if(!ModelState.IsValid)
         {
             ModelState.AddModelError("", "Speise bearbeiten ist fehlgeschlagen...");
             return View("Edit", speiseVm);
-        }
+        } */
 
         var userSpeise = await _speiseRepository.GetByIdAsync(id);
 

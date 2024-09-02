@@ -28,5 +28,9 @@
         <input asp-for="Bild" type="file" class="form-control" placeholder="Bild">
         <span asp-validation-for="Bild" class="text-danger"></span>
     </div>
+    <div class="form-group">
+        <label asp-for="ErstelltAm">Erstellt am</label>
+        <span asp-validation-for="ErstelltAm" class="text-danger"></span>
+    </div>
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>
