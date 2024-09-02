@@ -1,3 +1,3 @@
-# Liefer App
+# Liefer Hero
 
-Meine Liefer Web App als MVC
+Food Ordering & Delivery Web-App
