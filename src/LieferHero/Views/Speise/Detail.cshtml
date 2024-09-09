@@ -1,0 +1,20 @@
+@model Speise
+
+@{
+    
+}
+
+<div class="row">
+
+    <div class="col-md-8">
+        <img class="img-fluid" src="@Model.Bild" alt="">
+    </div>
+
+    <div class="col-md-4">
+        <h3 class="my-3">@Model.Name</h3>
+        <p>@Model.Beschreibung</p>
+        <p>@Model.Preis</p>
+        <p>@Model.ErstelltAm</p>
+    </div>
+
+</div>

@@ -29,6 +29,12 @@ public class SpeiseController : Controller
         return View(speisen);
     }
 
+    public async Task<IActionResult> Detail(int id)
+    {
+        var speise = await _speiseRepository.GetByIdAsync(id);
+        return View(speise);
+    }
+
     public async Task<IActionResult> Speisekarte()
     {
         var speisen = await _speiseRepository.GetAll();
